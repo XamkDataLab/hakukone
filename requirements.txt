@@ -1,0 +1,4 @@
+pyodbc
+plotly
+pyvis
+networkx
