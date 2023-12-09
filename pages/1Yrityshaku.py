@@ -3,11 +3,6 @@ from queries import *
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objs as go
-
-if st.button("Clear All"):
-    # Clear values from *all* all in-memory and on-disk data caches:
-    # i.e. clear values from both square and cube
-    st.cache_data.clear()
     
 small_font_style = """
 <style>
@@ -135,7 +130,7 @@ def make_cpc(df):
     return fig
 
 if y_tunnus:
-    data = fetch_data2(y_tunnus)
+    data = hae_yritysten_summat(y_tunnus)
     if not data.empty:
         st.markdown(f"<div class='large-font'>{data['yritys'].iloc[0]}</div>", unsafe_allow_html=True)
         yritys_basename = data['yritys_basename2'].iloc[0]
