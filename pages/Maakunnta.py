@@ -35,6 +35,8 @@ def plot_top_trademarks(df):
 
 # Main Streamlit app code
 df = fetch_aggregated_data()
+df2 = df.head(100)
+st.dataframe(df2)
 df = df[df['Maakunnan_nimi'].notna()]
 maakunnan_nimi_list = df['Maakunnan_nimi'].unique().tolist()
 maakunnan_nimi_list.insert(0, "All")
