@@ -98,4 +98,9 @@ else:
 
     # Display bar charts for patents and trademarks
     fig_patents = plot_top_patents(filtered_df)
-    fig_trademarks
+    fig_trademarks = plot_top_trademarks(filtered_df)
+    st.plotly_chart(fig_patents)
+    st.plotly_chart(fig_trademarks)
+
+    # Display additional data for the selected maakunta
+    st.dataframe(filtered_df[['y_tunnus', 'yritys', 'yrityksen_rekisteröimispäivä', 'Maakunnan_nimi', 'Total_Business_Finland_Funding', 'Patent_Applications_Count', 'Total_Funding', 'Total_EU_Horizon_Funding', 'Total_Tutkimusrahoitus']])
