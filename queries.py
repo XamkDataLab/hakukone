@@ -252,7 +252,6 @@ def fetch_aggregated_data():
         SELECT 
             y_tunnus,
             SUM(CAST(netEcContribution AS FLOAT)) as Total_Horizon_Europe_Funding
-    FROM 
         FROM 
             horizon_europe_orgs
         WHERE 
