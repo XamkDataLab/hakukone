@@ -71,4 +71,4 @@ if y_tunnus and yritys_nimi:
     else:
         st.write("No data found.")
 else:
-    st.write("Anna Y-tunnus yrityshakuun!")
+    st.header("Anna Y-tunnus yrityshakuun!")
