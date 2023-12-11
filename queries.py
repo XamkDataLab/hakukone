@@ -248,6 +248,17 @@ def fetch_aggregated_data():
         GROUP BY 
             Y_tunnus
     ),
+    HorizonEurope AS (
+        SELECT 
+            y_tunnus,
+            SUM(netEcContribution) as Total_Horizon_Europe_Funding
+        FROM 
+            horizon_europe_orgs
+        WHERE 
+            y_tunnus IS NOT NULL
+        GROUP BY 
+            y_tunnus
+    ),
     EURA2027Funding AS (
         SELECT 
             Business_ID_of_the_implementing_organisation,
@@ -329,6 +340,7 @@ def fetch_aggregated_data():
         y.yhtiömuoto,
         y.status,
         COALESCE(f.Total_Funding, 0) as Total_Funding,
+        COALESCE(he.Total_Horizon_Europe_Funding, 0) as Total_Horizon_Europe_Funding,
         COALESCE(e27.Total_EURA2027_Funding, 0) as Total_EURA2027_Funding,
         COALESCE(d.Design_Rights_Count, 0) as Design_Rights_Count,
         COALESCE(t.Trademarks_Count, 0) as Trademarks_Count,
@@ -341,6 +353,8 @@ def fetch_aggregated_data():
         yritykset y
     LEFT JOIN 
         Funding f ON y.y_tunnus = f.Y_tunnus
+    LEFT JOIN 
+        HorizonEurope he ON y.y_tunnus = he.y_tunnus
     LEFT JOIN 
         EURA2027Funding e27 ON y.y_tunnus = e27.Business_ID_of_the_implementing_organisation
     LEFT JOIN 
@@ -362,6 +376,7 @@ def fetch_aggregated_data():
         = pi.Postinumeroalue
     WHERE 
         COALESCE(f.Total_Funding, 0) <> 0 OR
+        COALESCE(he.Total_Horizon_Europe_Funding, 0) <> 0 OR
         COALESCE(e27.Total_EURA2027_Funding, 0) <> 0 OR
         COALESCE(d.Design_Rights_Count, 0) <> 0 OR
         COALESCE(t.Trademarks_Count, 0) <> 0 OR
