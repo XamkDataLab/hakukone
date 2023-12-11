@@ -463,3 +463,10 @@ def fetch_legal_status_data():
     with pyodbc.connect(f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}') as conn:
         df = pd.read_sql(query, conn)
     return df
+
+def fetch_new_eura_data(y_tunnus):
+    query = """SELECT * FROM EURA2027 WHERE Business_ID_of_the_implementing_organisation = ?;"""
+    
+    with pyodbc.connect(f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}') as conn:
+        df = pd.read_sql(query, conn, params=(y_tunnus,))
+    return df
