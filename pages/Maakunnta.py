@@ -97,7 +97,7 @@ if selected_maakunnan_nimi == "All":
     
     # Display the Sankey diagram in Streamlit
     st.plotly_chart(fig)
-    st.dataframe(df[['y_tunnus', 'yritys']])
+    
 else:
     filtered_df = df[df['Maakunnan_nimi'] == selected_maakunnan_nimi]
     filtered_df['yhtiömuoto'].fillna('unknown', inplace=True)
