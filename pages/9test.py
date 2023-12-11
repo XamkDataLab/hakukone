@@ -122,7 +122,8 @@ else:
     funding_columns = ['EURA2014-2020 rahoitus', 'Horizon Europe rahoitus', 'EURA2021-2027 rahoitus', 'Business Finland avustukset', 'Business Finland tutkimusrahoitus']
     for funding_column in funding_columns:
         fig_funding = plot_top_funding(filtered_df, funding_column)
-        st.plotly_chart(fig_funding)
+        if fig_funding:  # Only plot if there are companies with funding
+            st.plotly_chart(fig_funding)
     
 
 df2 = df.head(100)
