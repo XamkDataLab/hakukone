@@ -35,8 +35,6 @@ def plot_top_trademarks(df):
 
 # Main Streamlit app code
 df = fetch_aggregated_data()
-df2 = df.head(100)
-st.dataframe(df2)
 df = df.rename(columns={
     "Total_Funding": "EURA2014-2020 rahoitus",
     "Total_Horizon_Europe_Funding": "Horizon Europe rahoitus",
@@ -59,6 +57,7 @@ if selected_maakunnan_nimi != "All":
     emblem_url = get_emblem_url_from_github(selected_maakunnan_nimi)
     emblem_placeholder.image(emblem_url, width=100)
 
+if selected_maakunnan_nimi == "All":
 # Funding sources for the Sankey diagram
 sources = ['EURA2014-2020 rahoitus', 'Horizon Europe rahoitus', 'EURA2021-2027 rahoitus', 'Business Finland avustukset', 'Business Finland tutkimusrahoitus']
 selected_source = st.selectbox('Select Source:', ["All"] + sources)
