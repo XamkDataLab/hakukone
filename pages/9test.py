@@ -4,7 +4,6 @@ import numpy as np
 import plotly.graph_objects as go
 from queries import *
 
-# Function to get the emblem URL from GitHub
 def get_emblem_url_from_github(maakunta_name):
     base_url = "https://raw.githubusercontent.com/XamkDataLab/hakukone/main/vaakunat"
     return f"{base_url}/{maakunta_name}.svg"
@@ -32,12 +31,17 @@ def plot_top_trademarks(df):
     return fig_trademarks
 
 def plot_top_funding(df, funding_column):
-    top_funding_df = df.sort_values(by=funding_column, ascending=False).head(10)
+    top_funding_df = df.sort_values(by=funding_column, ascending=False)
+    if len(top_funding_df) > 10:
+        top_funding_df = top_funding_df.head(10)
+    if top_funding_df.empty or top_funding_df[funding_column].max() == 0:
+        return None
+
     fig_funding = go.Figure(data=[
         go.Bar(y=top_funding_df['yritys'], x=top_funding_df[funding_column], orientation='h',
                text=top_funding_df[funding_column], textposition='auto')
     ])
-    fig_funding.update_layout(title=f'Top 10 Yritykset joilla eniten {funding_column}',
+    fig_funding.update_layout(title=f'Top {len(top_funding_df)} Yritykset joilla eniten {funding_column} - {selected_maakunnan_nimi}',
                               yaxis_title='Yritys',
                               xaxis_title='Rahoituksen määrä')
     return fig_funding
@@ -56,13 +60,10 @@ df = df[df['Maakunnan_nimi'].notna()]
 maakunnan_nimi_list = df['Maakunnan_nimi'].unique().tolist()
 maakunnan_nimi_list.insert(0, "All")
 
-# Create a placeholder for the emblem at the top
 emblem_placeholder = st.empty()
 
-# Display the maakunta selectbox
 selected_maakunnan_nimi = st.selectbox('Valitse maakunta', maakunnan_nimi_list)
 
-# If a specific maakunta is selected, display the emblem at the placeholder's position
 if selected_maakunnan_nimi != "All":
     emblem_url = get_emblem_url_from_github(selected_maakunnan_nimi)
     emblem_placeholder.image(emblem_url, width=100)
@@ -74,12 +75,10 @@ if selected_maakunnan_nimi == "All":
 
 if selected_maakunnan_nimi == "All":
     maakunta_values = df['Maakunnan_nimi'].unique().tolist()
-    
-    # Filter by the selected source if it's not "All"
+
     if selected_source != "All":
         sources = [selected_source]
 
-    # Create lists to store Sankey diagram data
     source_indices = []
     target_indices = []
     values = []
