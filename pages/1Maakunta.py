@@ -126,7 +126,7 @@ else:
     fig_trademarks = plot_top_trademarks(filtered_df)
     st.plotly_chart(fig_patents)
     st.plotly_chart(fig_trademarks)
-    funding_columns = ['EURA2014-2020 rahoitus', 'Horizon Europe rahoitus', 'EURA2021-2027 rahoitus', 'Business Finland avustukset', 'Business Finland tutkimusrahoitus']
+    funding_columns = ['EURA2021-2027 rahoitus', 'Horizon Europe rahoitus', 'Business Finland avustukset', 'Business Finland tutkimusrahoitus', 'EURA2014-2020 rahoitus']
     for funding_column in funding_columns:
         fig_funding = plot_top_funding(filtered_df, funding_column)
         if fig_funding:  # Only plot if there are companies with funding
