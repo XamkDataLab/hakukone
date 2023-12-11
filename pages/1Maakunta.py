@@ -31,7 +31,7 @@ def plot_top_trademarks(df):
                                  yaxis_title='Tavaramerkkien määrä')
     return fig_trademarks
 
-# Main Streamlit app code
+st.heaader("Maakunnat")
 df = fetch_aggregated_data()
 df = df.rename(columns={
     "Total_Funding": "EURA2014-2020 rahoitus",
@@ -94,7 +94,9 @@ if selected_maakunnan_nimi == "All":
             value=values
         )
     ))
-    
+    fig.update_layout(
+    title_text='Rahoituksen jakautuminen maakunnittain',
+    title_font_size=24
     # Display the Sankey diagram in Streamlit
     st.plotly_chart(fig)
     
