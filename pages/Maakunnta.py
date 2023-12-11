@@ -9,28 +9,26 @@ def get_emblem_url_from_github(maakunta_name):
     base_url = "https://raw.githubusercontent.com/XamkDataLab/hakukone/main/vaakunat"
     return f"{base_url}/{maakunta_name}.svg"
 
-# Function to create a bar chart for Top 10 companies with most patents
 def plot_top_patents(df):
     top_patents_df = df.sort_values(by='Patent_Applications_Count', ascending=False).head(10)
     fig_patents = go.Figure(data=[
         go.Bar(x=top_patents_df['yritys'], y=top_patents_df['Patent_Applications_Count'],
                text=top_patents_df['Patent_Applications_Count'], textposition='auto')
     ])
-    fig_patents.update_layout(title='Top 10 Companies with Most Patent Applications',
-                              xaxis_title='Company',
-                              yaxis_title='Number of Patent Applications')
+    fig_patents.update_layout(title='Top 10 Yritykset joilla eniten patenttidokumentteja',
+                              xaxis_title='Yritys',
+                              yaxis_title='Patenttidokumenttien määrä')
     return fig_patents
 
-# Function to create a bar chart for Top 10 companies with most trademarks
 def plot_top_trademarks(df):
     top_trademarks_df = df.sort_values(by='Trademarks_Count', ascending=False).head(10)
     fig_trademarks = go.Figure(data=[
         go.Bar(x=top_trademarks_df['yritys'], y=top_trademarks_df['Trademarks_Count'],
                text=top_trademarks_df['Trademarks_Count'], textposition='auto')
     ])
-    fig_trademarks.update_layout(title='Top 10 Companies with Most Trademarks',
-                                 xaxis_title='Company',
-                                 yaxis_title='Number of Trademarks')
+    fig_trademarks.update_layout(title='Top 10 Yritykset joilla eniten tavaramerkkejä',
+                                 xaxis_title='Yritys',
+                                 yaxis_title='Tavaramerkkien määrä')
     return fig_trademarks
 
 # Main Streamlit app code
@@ -60,7 +58,7 @@ if selected_maakunnan_nimi != "All":
 if selected_maakunnan_nimi == "All":
     # Funding sources for the Sankey diagram
     sources = ['EURA2014-2020 rahoitus', 'Horizon Europe rahoitus', 'EURA2021-2027 rahoitus', 'Business Finland avustukset', 'Business Finland tutkimusrahoitus']
-    selected_source = st.selectbox('Select Source:', ["All"] + sources)
+    selected_source = st.selectbox('Valitse rahoituslähde', ["All"] + sources)
 
 if selected_maakunnan_nimi == "All":
     maakunta_values = df['Maakunnan_nimi'].unique().tolist()
@@ -104,11 +102,7 @@ else:
     filtered_df = df[df['Maakunnan_nimi'] == selected_maakunnan_nimi]
     filtered_df['yhtiömuoto'].fillna('unknown', inplace=True)
 
-    # Display bar charts for patents and trademarks
     fig_patents = plot_top_patents(filtered_df)
     fig_trademarks = plot_top_trademarks(filtered_df)
     st.plotly_chart(fig_patents)
     st.plotly_chart(fig_trademarks)
-
-    # Display additional data for the selected maakunta
-    st.dataframe(filtered_df[['y_tunnus', 'yritys', 'yrityksen_rekisteröimispäivä', 'Maakunnan_nimi', 'Total_Business_Finland_Funding', 'Patent_Applications_Count', 'Total_Funding', 'Total_EU_Horizon_Funding', 'Total_Tutkimusrahoitus']])
