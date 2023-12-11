@@ -39,7 +39,7 @@ if y_tunnus and yritys_basename:
     st.title(f"EURA rahoitus yritykselle {yritys_basename}")
     data = fetch_eura_data(y_tunnus)
 else:
-    st.header("Anna Y-tunnus yrityshakuun.")
+    st.header("Anna Y-tunnus yrityshakuun!")
     data = pd.DataFrame()
 
 if not data.empty:
