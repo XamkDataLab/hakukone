@@ -250,12 +250,12 @@ def fetch_aggregated_data():
     ),
     EURA2027Funding AS (
         SELECT 
-            Y_tunnus,
+            Business_ID_of_the_implementing_organisation,
             SUM(Planned_EU_and_state_funding) as Total_EURA2027_Funding
         FROM 
             EURA2027
         GROUP BY 
-            Y_tunnus
+            Business_ID_of_the_implementing_organisation
     ),
     DesignRights AS (
         SELECT 
@@ -342,7 +342,7 @@ def fetch_aggregated_data():
     LEFT JOIN 
         Funding f ON y.y_tunnus = f.Y_tunnus
     LEFT JOIN 
-        EURA2027Funding e27 ON y.y_tunnus = e27.Y_tunnus
+        EURA2027Funding e27 ON y.y_tunnus = e27.Business_ID_of_the_implementing_organisation
     LEFT JOIN 
         DesignRights d ON y.yritys_basename = d.applicant_basename
     LEFT JOIN 
