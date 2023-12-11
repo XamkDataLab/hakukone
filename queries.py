@@ -248,17 +248,19 @@ def fetch_aggregated_data():
         GROUP BY 
             Y_tunnus
     ),
+    
     HorizonEurope AS (
-        SELECT 
-            y_tunnus,
-            SUM(CAST(netEcContribution AS FLOAT)) as Total_Horizon_Europe_Funding
-        FROM 
-            horizon_europe_orgs
-        WHERE 
-            y_tunnus IS NOT NULL
-        GROUP BY 
-            y_tunnus
-    ),
+    SELECT 
+        y_tunnus,
+        SUM(CAST(netEcContribution AS FLOAT)) as Total_Horizon_Europe_Funding
+    FROM 
+        (SELECT DISTINCT * FROM horizon_europe_orgs) AS distinct_horizon_europe_orgs
+    WHERE 
+        y_tunnus IS NOT NULL
+    GROUP BY 
+        y_tunnus
+),
+  
     EURA2027Funding AS (
         SELECT 
             Business_ID_of_the_implementing_organisation,
