@@ -58,9 +58,9 @@ if selected_maakunnan_nimi != "All":
     emblem_placeholder.image(emblem_url, width=100)
 
 if selected_maakunnan_nimi == "All":
-# Funding sources for the Sankey diagram
-sources = ['EURA2014-2020 rahoitus', 'Horizon Europe rahoitus', 'EURA2021-2027 rahoitus', 'Business Finland avustukset', 'Business Finland tutkimusrahoitus']
-selected_source = st.selectbox('Select Source:', ["All"] + sources)
+    # Funding sources for the Sankey diagram
+    sources = ['EURA2014-2020 rahoitus', 'Horizon Europe rahoitus', 'EURA2021-2027 rahoitus', 'Business Finland avustukset', 'Business Finland tutkimusrahoitus']
+    selected_source = st.selectbox('Select Source:', ["All"] + sources)
 
 if selected_maakunnan_nimi == "All":
     maakunta_values = df['Maakunnan_nimi'].unique().tolist()
