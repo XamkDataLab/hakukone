@@ -31,7 +31,7 @@ def plot_top_trademarks(df):
                                  yaxis_title='Tavaramerkkien määrä')
     return fig_trademarks
 
-st.heaader("Maakunnat")
+st.header("Maakunnat")
 df = fetch_aggregated_data()
 df = df.rename(columns={
     "Total_Funding": "EURA2014-2020 rahoitus",
