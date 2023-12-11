@@ -37,6 +37,13 @@ def plot_top_trademarks(df):
 df = fetch_aggregated_data()
 df2 = df.head(100)
 st.dataframe(df2)
+df = df.rename(columns={
+    "Total_Funding": "EURA2014-2020 rahoitus",
+    "Total_Horizon_Europe_Funding": "Horizon Europe rahoitus",
+    "Total_EURA2027_Funding": "EURA2021-2027 rahoitus",
+    "Total_Business_Finland_Funding": "Business Finland avustukset",
+    "Total_Tutkimusrahoitus": "Business Finland tutkimusrahoitus"
+})
 df = df[df['Maakunnan_nimi'].notna()]
 maakunnan_nimi_list = df['Maakunnan_nimi'].unique().tolist()
 maakunnan_nimi_list.insert(0, "All")
@@ -45,7 +52,7 @@ maakunnan_nimi_list.insert(0, "All")
 emblem_placeholder = st.empty()
 
 # Display the maakunta selectbox
-selected_maakunnan_nimi = st.selectbox('Select Maakunnan_nimi:', maakunnan_nimi_list)
+selected_maakunnan_nimi = st.selectbox('Valitse maakunta', maakunnan_nimi_list)
 
 # If a specific maakunta is selected, display the emblem at the placeholder's position
 if selected_maakunnan_nimi != "All":
@@ -53,7 +60,7 @@ if selected_maakunnan_nimi != "All":
     emblem_placeholder.image(emblem_url, width=100)
 
 # Funding sources for the Sankey diagram
-sources = ['Total_Funding', 'Total_EU_Horizon_Funding', 'Total_Business_Finland_Funding', 'Total_Tutkimusrahoitus']
+sources = ['EURA2014-2020 rahoitus', 'Horizon Europe rahoitus', 'EURA2021-2027 rahoitus', 'Business Finland avustukset', 'Business Finland tutkimusrahoitus']
 selected_source = st.selectbox('Select Source:', ["All"] + sources)
 
 if selected_maakunnan_nimi == "All":
