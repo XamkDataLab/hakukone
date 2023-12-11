@@ -8,7 +8,7 @@ database = st.secrets["database"]
 username = st.secrets["username"]
 password = st.secrets["password"]
 
-
+@st.cache_data
 def hae_yritysten_summat(y_tunnus):
     # Define the SQL query
     query = """ 
@@ -234,8 +234,9 @@ def fetch_time_series_data_funding(y_tunnus):
         EURA2_df = pd.read_sql_query(EURA2_query, conn, params=(y_tunnus,))
         EUmuu_df = pd.read_sql_query(EUmuu_query,conn,params=(y_tunnus,))
 
-    return EURA_df, BF_df, EURA2_df,EUmuu_df
+   return EURA_df, BF_df, EURA2_df,EUmuu_df
 
+@st.cache_data
 def fetch_aggregated_data():
     query = """
     WITH 
@@ -418,6 +419,7 @@ def fetch_eura2027_collab():
         collab_df = pd.read_sql_query(collab_query, conn)
     return collab_df
 
+@st.cache_data
 def fetch_collaboration_data():
     query = """
     SELECT 
@@ -466,13 +468,15 @@ def fetch_legal_status_data():
         df = pd.read_sql(query, conn)
     return df
 
+@st.cache_data
 def fetch_new_eura_data(y_tunnus):
     query = """SELECT * FROM EURA2027 WHERE Business_ID_of_the_implementing_organisation = ?;"""
     
     with pyodbc.connect(f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}') as conn:
         df = pd.read_sql(query, conn, params=(y_tunnus,))
     return df
-
+    
+@st.cache_data
 def fetch_eura_data(y_tunnus):
     query = """SELECT * FROM EURA2020 WHERE Y_tunnus = ?;"""
     
@@ -480,6 +484,7 @@ def fetch_eura_data(y_tunnus):
         df = pd.read_sql(query, conn, params=(y_tunnus,))
     return df
 
+@st.cache_data
 def fetch_horizon_data(y_tunnus):
     query = """SELECT * FROM EU_Horizon2 WHERE y_tunnus = ?;"""
     
