@@ -39,7 +39,7 @@ if y_tunnus and yritys_basename:
     st.title(f"EURA rahoitus yritykselle {yritys_basename}")
     data = fetch_eura_data(y_tunnus)
 else:
-    st.write("Invalid or missing parameters.")
+    st.header("Anna Y-tunnus yrityshakuun.")
     data = pd.DataFrame()
 
 if not data.empty:
@@ -57,4 +57,4 @@ if not data.empty:
 
     generate_eura_project_viz(data, st.session_state.filter_ended)
 else:
-    st.write("No data found.")
+    st.write("")
