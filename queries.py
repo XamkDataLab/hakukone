@@ -234,7 +234,7 @@ def fetch_time_series_data_funding(y_tunnus):
         EURA2_df = pd.read_sql_query(EURA2_query, conn, params=(y_tunnus,))
         EUmuu_df = pd.read_sql_query(EUmuu_query,conn,params=(y_tunnus,))
 
-   return EURA_df, BF_df, EURA2_df,EUmuu_df
+    return EURA_df, BF_df, EURA2_df,EUmuu_df
 
 @st.cache_data
 def fetch_aggregated_data():
