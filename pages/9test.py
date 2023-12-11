@@ -31,10 +31,16 @@ def plot_top_trademarks(df):
     return fig_trademarks
 
 def plot_top_funding(df, funding_column):
-    top_funding_df = df.sort_values(by=funding_column, ascending=False)
+    # Filter out companies with zero funding
+    df_with_funding = df[df[funding_column] > 0]
+
+    # Sort and limit to top 10, if more than 10 companies have funding
+    top_funding_df = df_with_funding.sort_values(by=funding_column, ascending=True)
     if len(top_funding_df) > 10:
-        top_funding_df = top_funding_df.head(10)
-    if top_funding_df.empty or top_funding_df[funding_column].max() == 0:
+        top_funding_df = top_funding_df.tail(10)
+
+    # Check if there are any companies with funding
+    if top_funding_df.empty:
         return None
 
     fig_funding = go.Figure(data=[
@@ -45,6 +51,7 @@ def plot_top_funding(df, funding_column):
                               yaxis_title='Yritys',
                               xaxis_title='Rahoituksen määrä')
     return fig_funding
+
 
 
 st.header("Maakunnat")
