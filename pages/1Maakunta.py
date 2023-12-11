@@ -108,3 +108,6 @@ else:
     fig_trademarks = plot_top_trademarks(filtered_df)
     st.plotly_chart(fig_patents)
     st.plotly_chart(fig_trademarks)
+
+df2 = df.head(100)
+st.dataframe(df2)
