@@ -470,3 +470,10 @@ def fetch_new_eura_data(y_tunnus):
     with pyodbc.connect(f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}') as conn:
         df = pd.read_sql(query, conn, params=(y_tunnus,))
     return df
+
+def fetch_eura_data(y_tunnus):
+    query = """SELECT * FROM EURA2020 WHERE Y_tunnus = ?;"""
+    
+    with pyodbc.connect(f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}') as conn:
+        df = pd.read_sql(query, conn, params=(y_tunnus,))
+    return df
