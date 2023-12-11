@@ -97,7 +97,7 @@ if selected_maakunnan_nimi == "All":
     fig.update_layout(
     title_text='Rahoituksen jakautuminen maakunnittain',
     title_font_size=24
-    # Display the Sankey diagram in Streamlit
+    )
     st.plotly_chart(fig)
     
 else:
