@@ -248,6 +248,15 @@ def fetch_aggregated_data():
         GROUP BY 
             Y_tunnus
     ),
+    EURA2027Funding AS (
+        SELECT 
+            Y_tunnus,
+            SUM(Planned_EU_and_state_funding) as Total_EURA2027_Funding
+        FROM 
+            EURA2027
+        GROUP BY 
+            Y_tunnus
+    ),
     DesignRights AS (
         SELECT 
             m.applicant_basename,
@@ -283,7 +292,7 @@ def fetch_aggregated_data():
     ),
     EUHorizon AS (
         SELECT 
-           y_tunnus,
+            y_tunnus,
             SUM([Beneficiary’s contracted amount (EUR)]) as Total_EU_Horizon_Funding
         FROM 
             EU_Horizon2
@@ -320,6 +329,7 @@ def fetch_aggregated_data():
         y.yhtiömuoto,
         y.status,
         COALESCE(f.Total_Funding, 0) as Total_Funding,
+        COALESCE(e27.Total_EURA2027_Funding, 0) as Total_EURA2027_Funding,
         COALESCE(d.Design_Rights_Count, 0) as Design_Rights_Count,
         COALESCE(t.Trademarks_Count, 0) as Trademarks_Count,
         COALESCE(p.Patent_Applications_Count, 0) as Patent_Applications_Count,
@@ -331,6 +341,8 @@ def fetch_aggregated_data():
         yritykset y
     LEFT JOIN 
         Funding f ON y.y_tunnus = f.Y_tunnus
+    LEFT JOIN 
+        EURA2027Funding e27 ON y.y_tunnus = e27.Y_tunnus
     LEFT JOIN 
         DesignRights d ON y.yritys_basename = d.applicant_basename
     LEFT JOIN 
@@ -350,6 +362,7 @@ def fetch_aggregated_data():
         = pi.Postinumeroalue
     WHERE 
         COALESCE(f.Total_Funding, 0) <> 0 OR
+        COALESCE(e27.Total_EURA2027_Funding, 0) <> 0 OR
         COALESCE(d.Design_Rights_Count, 0) <> 0 OR
         COALESCE(t.Trademarks_Count, 0) <> 0 OR
         COALESCE(p.Patent_Applications_Count, 0) <> 0 OR
@@ -361,3 +374,4 @@ def fetch_aggregated_data():
     with pyodbc.connect(f'DRIVER={driver};SERVER={server};PORT=1433;DATABASE={database};UID={username};PWD={password}') as conn:
         df = pd.read_sql(query, conn)
     return df
+
