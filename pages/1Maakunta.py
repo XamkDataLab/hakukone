@@ -76,7 +76,6 @@ if selected_maakunnan_nimi != "All":
     emblem_placeholder.image(emblem_url, width=100)
 
 if selected_maakunnan_nimi == "All":
-    # Funding sources for the Sankey diagram
     sources = ['EURA2014-2020 rahoitus', 'Horizon Europe rahoitus', 'EURA2021-2027 rahoitus', 'Business Finland avustukset', 'Business Finland tutkimusrahoitus']
     selected_source = st.selectbox('Valitse rahoituslähde', ["All"] + sources)
 
@@ -90,7 +89,6 @@ if selected_maakunnan_nimi == "All":
     target_indices = []
     values = []
 
-    # Populate the lists with data
     for idx, source in enumerate(sources):
         grouped = df.groupby('Maakunnan_nimi')[source].sum()
         for maakunta_idx, maakunta in enumerate(maakunta_values):
@@ -98,7 +96,6 @@ if selected_maakunnan_nimi == "All":
             target_indices.append(len(sources) + maakunta_idx)
             values.append(grouped[maakunta])
 
-    # Create the Sankey diagram
     fig = go.Figure(go.Sankey(
         node=dict(
             pad=15,
