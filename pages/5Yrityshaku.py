@@ -43,24 +43,17 @@ st.markdown(large_number_style, unsafe_allow_html=True)
 
 st.title('Hae yrityksen tiedot')
 
-# Input for Y_tunnus
 y_tunnus = st.text_input("Anna Y-tunnus (ja paina enter)")
 st.session_state['y_tunnus'] = y_tunnus
 
 def create_bar_chart(data, column, title, xaxis_title):
-    # Compute value counts and reset index
+    
     counts = data[column].value_counts().reset_index()
-
-    # Rename the columns for clarity
     counts.columns = [xaxis_title, 'Frequency']
-
-    # Sort the dataframe so that the highest frequency is at the bottom (for horizontal bar chart)
     counts.sort_values(by='Frequency', ascending=True, inplace=True)
 
-    # Create the bar chart with descriptions on y-axis and frequencies on x-axis
     fig = px.bar(counts, y=xaxis_title, x='Frequency', orientation='h')
 
-    # Update layout: remove axis labels
     fig.update_layout(
         title=title,
         xaxis_title='',  # Removing x-axis label
@@ -69,7 +62,6 @@ def create_bar_chart(data, column, title, xaxis_title):
         hoverlabel=dict(font_size=16)  # Enlarge hover label font size
     )
 
-    # Update hover information
     fig.update_traces(hovertemplate='%{y}: %{x}<extra></extra>')
 
     return fig
@@ -79,13 +71,9 @@ def format_currency(number):
     return f"{number:,.0f} €".replace(",", " ")
     
 def plot_time_series(df, title, date_col, money_cols):
-    # Convert date column to just the year part
+
     df['year'] = df[date_col].dt.year
-
-    # Group by year and sum the money columns
     df_grouped = df.groupby('year')[money_cols].sum().reset_index()
-
-    # Create a Plotly figure
     fig = px.line(df_grouped, x='year', y=money_cols, title=title)
 
     # Customize the layout if needed
@@ -140,7 +128,6 @@ if y_tunnus:
 
         col1, col2, col3 = st.columns(3)  # Create three columns
 
-        # Content for the first column
         card_content1 = f"""
         <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
         <div class="medium-font">EU rahoitus 2013-2030</div>
@@ -155,7 +142,6 @@ if y_tunnus:
         """
         col1.markdown(card_content1, unsafe_allow_html=True)
 
-        # Content for the second column
         card_content2 = f"""
         <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
         <div class="medium-font">Patenttidokumenttien määrä</div>
@@ -167,7 +153,6 @@ if y_tunnus:
         """
         col2.markdown(card_content2, unsafe_allow_html=True)
 
-        # Content for the third column
         card_content3 = f"""
         <div style="background-color: #f5f5f5; padding: 15px; border-radius: 5px;">
         <div class="medium-font">Business Finland avustukset</div>
@@ -263,14 +248,12 @@ if y_tunnus:
         cpc_data['cpc_class'] = cpc_data['cpc_code'].str[0].map(cpc_class_mapping)
         cpc_class_counts = cpc_data['cpc_class'].value_counts()
 
-        # Create a bar chart using Plotly
         fig = px.bar(cpc_class_counts, 
                      x=cpc_class_counts.index, 
                      y=cpc_class_counts.values,
                      labels={'x': 'CPC Patent Section', 'y': 'Number of Classifications'},
                      title='Distribution of Patents Across CPC Sections')
         
-        # In a Streamlit app, use st.plotly_chart() to display the plot
         st.plotly_chart(fig)
         
         cpc_data = cpc_data[cpc_data['cpc_classification'].notna() & cpc_data['cpc_classification'].apply(lambda x: isinstance(x, str))]
@@ -280,7 +263,6 @@ if y_tunnus:
         fig_class = create_bar_chart(cpc_data2, 'Class Description', 'Frequency of Class Descriptions', 'Class Description')
         fig_subclass = create_bar_chart(cpc_data2, 'Subclass Description', 'Frequency of Subclass Descriptions', 'Subclass Description')
         
-        # Streamlit application
         st.title('Patenttien luokitukset')
         
         st.write("## Luokkien kuvaukset")
