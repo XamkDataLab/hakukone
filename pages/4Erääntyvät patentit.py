@@ -19,7 +19,6 @@ df['Hakija'] = df['yritys'].where(df['yritys'].notna(), df['extracted_name'].app
 
 option = st.selectbox('Näytä patentit jotka eräänyvät', ['3 kuukauden kuluessa', '6 kuukauden kuluessa', '12 kuukauden kuluessa'])
 
-# Set the date range
 min_date = datetime.today()
 if option == '3 kuukauden kuluessa':
     max_date = min_date + timedelta(days=90)
